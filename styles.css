@@ -1,0 +1,16 @@
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.box {
+    display: flex;
+    border: solid 2px black;
+    height: 60px;
+    width: 60px;
+}
+
+.container {
+    border: solid 2px white !important;
+}
