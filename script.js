@@ -3,6 +3,7 @@ const X = "X"
 const O = "O"
 
 const GameBoard = (() => {
+    let isXTurn = true
     let gameOver = false
     let gameArr = [[" ", " ", " "],[" ", " ", " "],[" ", " ", " "]]
      return {
@@ -15,21 +16,33 @@ const GameBoard = (() => {
 //
 
 const Player = (name) => {
-    let isXTurn = true
+    
     const makeMove = (e) => {
         const id = e.srcElement.id.slice(2, e.srcElement.id.length)
-        console.log(id)
         const box = document.getElementById(`b-${id}`)
-        if (isXTurn) {
-            box.textContent = X }
+        const i = id.slice(1, 2)
+        const d = id.slice(4, 5)
+        if (GameBoard.isXTurn) {
+            GameBoard.gameArr[i][d] = X
+            box.textContent = X 
+            GameBoard.isXTurn = false;
+        }
         else {
-            box.textContent = O }
+            GameBoard.gameArr[i][d] = O
+            box.textContent = O 
+            GameBoard.isXTurn = true; 
+            console.log(GameBoard.gameArr)
+        }
+
         
-        isXTurn = false;
+       
     }
     return {makeMove};
   };  
 
+function checkWin () {
+
+}
 
 const emma = Player('emma')
 
@@ -41,7 +54,7 @@ for (let i = 0; i < GameBoard.gameArr.length; i ++) {
         container.appendChild(row);
         
     for (let j=0; j < GameBoard.gameArr[i].length; j++) { 
-        let box = document.createElement("div");
+        const box = document.createElement("div");
         box.className = "box";
         box.setAttribute('id', `b-[${i}][${j}]`)
         box.textContent = GameBoard.gameArr[i][j]
@@ -54,8 +67,4 @@ for (let i = 0; i < GameBoard.gameArr.length; i ++) {
 
 document.addEventListener('DOMContentLoaded', addGrid() ) 
 
-//create a box div for each space on the game board array, each one with an event listener and an i/j value 
 
-//players take it in turn to make a move, a boolean denotes whether it is players turn which can be set to false
-//after a move is made
-//every move a player can take will have an i/j value and this can be pushed to game array
