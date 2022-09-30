@@ -54,6 +54,7 @@ const GameBoard = (() => {
 //
 
 const Player = (name, piece) => {
+<<<<<<< HEAD
 
     const getPiece = () => piece;
 
@@ -76,6 +77,53 @@ const Player = (name, piece) => {
 
 X = Player(player2, X)
 O = Player(player1, O)
+=======
+    const getPiece = () => piece;
+  
+        //     GameBoard.isXTurn = false;
+        // }
+       
+        
+
+        // if (GameBoard.isXTurn) {
+        //     GameBoard.gameArr[i][d] = X
+        //     box.textContent = X 
+        //     GameBoard.isXTurn = false;
+        // }
+        // else {
+        //     GameBoard.gameArr[i][d] = O
+        //     box.textContent = O 
+        //     GameBoard.isXTurn = true; 
+        //     console.log(GameBoard.gameArr)
+        // }
+
+    return {getPiece};
+  };  
+
+const emma = Player('emma', X)
+const mart = Player('martin', O)
+
+let player = emma 
+//player is emma 
+  
+  function makeMove(e, player) {
+    console.log("playpiece:" + player.getPiece())
+    const id = e.srcElement.id.slice(2, e.srcElement.id.length)
+    const box = document.getElementById(`b-${id}`)
+    const i = id.slice(1, 2)
+    const d = id.slice(4, 5)
+    GameBoard.gameArr[i][d] = player.getPiece()
+    box.textContent = player.getPiece() 
+    if (GameBoard.isXTurn) {
+        GameBoard.isXTurn = false; //
+        player = mart;
+    }
+    else {
+        player = emma
+        GameBoard.isXTurn = true;
+}
+  }
+>>>>>>> aaeb42cbbe2915367f8bac885affd5790ec83c56
 
 function addGrid() {
 for (let i = 0; i < GameBoard.gameArr.length; i ++) {
@@ -89,7 +137,11 @@ for (let i = 0; i < GameBoard.gameArr.length; i ++) {
         box.setAttribute('id', `b-[${i}][${j}]`)
         box.textContent = GameBoard.gameArr[i][j]
         if (GameBoard.gameArr[i][j] == " ") {
+<<<<<<< HEAD
             box.addEventListener('click', (e) => GameBoard.pickTurn().makeMove(e), { once: true }) }
+=======
+            box.addEventListener('click', (e) => makeMove(e, player)) }
+>>>>>>> aaeb42cbbe2915367f8bac885affd5790ec83c56
         row.appendChild(box);
     }
 }
