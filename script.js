@@ -19,27 +19,28 @@ const GameBoard = (() => {
     } return player }
 
     let gameArr = [[" ", " ", " "],[" ", " ", " "],[" ", " ", " "]]
-
+    const winArr = [] 
+    let ind = 0;
     const checkWinner = (piece) => {
         for (let i = 0; i < gameArr.length; i ++) {
-         let cond = gameArr[i].every((element) => element === piece) 
-
-                console.log("condy: " + cond)
-                    // console.log(element + ": wins") //check horizontal
-                    // every((x) => x === 2))
-        
-        } 
+        let cond = gameArr[i].every((element) => element === piece) 
+        const miniArr = []
+        console.log(gameArr[i][ind])
+        for (let j = 0; j < gameArr[i].length; j++) {
+        console.log(gameArr[i][ind])
+        ind ++
+        }
+        } }
      
         
-    }
-
+    
 
 
     const checkGameOver = () => {
      
         if (gameArr[0].includes(" ") == false && gameArr[1].includes(" ") == false && gameArr[2].includes(" ") == false ) {
             gameOver = true }
-            console.log(gameOver)
+          
         }
     
      return {
