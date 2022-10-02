@@ -19,21 +19,70 @@ const GameBoard = (() => {
     } return player }
 
     let gameArr = [[" ", " ", " "],[" ", " ", " "],[" ", " ", " "]]
-    const winArr = [] 
-    let ind = 0;
-    const checkWinner = (piece) => {
-        for (let i = 0; i < gameArr.length; i ++) {
-        let cond = gameArr[i].every((element) => element === piece) 
-        const miniArr = []
-        console.log(gameArr[i][ind])
-        for (let j = 0; j < gameArr[i].length; j++) {
-        console.log(gameArr[i][ind])
-        ind ++
-        }
-        } }
-     
+
+    const setGameOver = (piece) => {
+        gameOver = true 
+        const endGame = document.createElement("div")
+        endGame.textContent = "Game over: " + piece + " wins!"
+        const end = document.querySelector(".end")
+        end.appendChild(endGame)
+        const button = document.createElement("button")
+        button.textContent = "restart game"
+        end.appendChild(button)
+        //add event listener, clear each box 
+        //look up way to find players name via piece 
         
+    }
+ 
+    const checkWinner = (piece) => {
+      
+        for (let i = 0; i < gameArr.length; i ++) {
+
+            let hori = gameArr[i].every((element) => element === piece) //checks for horizontal
+ 
+            let verticalArr =  [gameArr[0][i], gameArr[1][i], gameArr[2][i]]   
+            let verti = verticalArr.every((element) => element === piece)
+            if (verti || hori) {
+                setGameOver(piece)
+            }
+        }    
+     
+        if (gameArr[0][0] == gameArr[1][1] && gameArr[1][1] == gameArr[2][2] && gameArr[2][2] == piece) 
+            {
+            setGameOver(piece);
+         }
+      
+        if (gameArr[0][2] == gameArr[1][1] && gameArr[1][1] == gameArr[2][0] && gameArr[2][0] == piece)
+           { setGameOver(piece)    }
+
+        
+        }
     
+    
+
+    // ANOTHER POSSIBLE SOLUTION
+    // const checkWinner = (piece) => {
+    //     const winConditions = [
+    //         [[0, 0], [0, 1], [0, 2]],
+    //         [[1, 0], [1, 1], [1, 2]],
+    //         [[2, 0], [2, 1], [2, 2]], 
+    //         [[0, 0], [1, 0], [2, 0]], 
+    //         [[0, 1], [1, 1], [2, 1]], 
+    //         [[0, 2], [1, 2], [2, 2]], 
+    //         [[0, 0], [1, 1], [2, 2]], 
+    //         [[0, 2], [1, 1], [2, 0]]
+    //     ]
+
+    //     for (let i = 0; i < winConditions.length; i++) {
+    //         if (winConditions[i].every((coordinate) => gameArr[coordinate[0]][coordinate[1]] === piece)) {
+    //             console.log('win');
+    //             return true;
+    //         }
+    //     }            
+
+    //     console.log('no win')
+    //     return false;
+    // }
 
 
     const checkGameOver = () => {
@@ -54,13 +103,13 @@ const GameBoard = (() => {
 //
 
 const Player = (name, piece) => {
-<<<<<<< HEAD
 
     const getPiece = () => piece;
 
     const getName = () => name;
 
     const makeMove = (e) =>  {
+      
         const id = e.srcElement.id.slice(2, e.srcElement.id.length)
         const box = document.getElementById(`b-${id}`)
         const i = id.slice(1, 2)
@@ -69,7 +118,7 @@ const Player = (name, piece) => {
         box.textContent = getPiece()
         GameBoard.checkGameOver()
         GameBoard.checkWinner(getPiece())
-      
+        
     }
        
     return {getPiece, getName, makeMove};
@@ -77,53 +126,6 @@ const Player = (name, piece) => {
 
 X = Player(player2, X)
 O = Player(player1, O)
-=======
-    const getPiece = () => piece;
-  
-        //     GameBoard.isXTurn = false;
-        // }
-       
-        
-
-        // if (GameBoard.isXTurn) {
-        //     GameBoard.gameArr[i][d] = X
-        //     box.textContent = X 
-        //     GameBoard.isXTurn = false;
-        // }
-        // else {
-        //     GameBoard.gameArr[i][d] = O
-        //     box.textContent = O 
-        //     GameBoard.isXTurn = true; 
-        //     console.log(GameBoard.gameArr)
-        // }
-
-    return {getPiece};
-  };  
-
-const emma = Player('emma', X)
-const mart = Player('martin', O)
-
-let player = emma 
-//player is emma 
-  
-  function makeMove(e, player) {
-    console.log("playpiece:" + player.getPiece())
-    const id = e.srcElement.id.slice(2, e.srcElement.id.length)
-    const box = document.getElementById(`b-${id}`)
-    const i = id.slice(1, 2)
-    const d = id.slice(4, 5)
-    GameBoard.gameArr[i][d] = player.getPiece()
-    box.textContent = player.getPiece() 
-    if (GameBoard.isXTurn) {
-        GameBoard.isXTurn = false; //
-        player = mart;
-    }
-    else {
-        player = emma
-        GameBoard.isXTurn = true;
-}
-  }
->>>>>>> aaeb42cbbe2915367f8bac885affd5790ec83c56
 
 function addGrid() {
 for (let i = 0; i < GameBoard.gameArr.length; i ++) {
@@ -137,11 +139,7 @@ for (let i = 0; i < GameBoard.gameArr.length; i ++) {
         box.setAttribute('id', `b-[${i}][${j}]`)
         box.textContent = GameBoard.gameArr[i][j]
         if (GameBoard.gameArr[i][j] == " ") {
-<<<<<<< HEAD
             box.addEventListener('click', (e) => GameBoard.pickTurn().makeMove(e), { once: true }) }
-=======
-            box.addEventListener('click', (e) => makeMove(e, player)) }
->>>>>>> aaeb42cbbe2915367f8bac885affd5790ec83c56
         row.appendChild(box);
     }
 }
