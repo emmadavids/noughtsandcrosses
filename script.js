@@ -6,6 +6,7 @@ const player2 = prompt("Please enter player two's name")
 const GameBoard = (() => {
     let isXTurn = true
     let gameOver = false
+    let gameArr = [[" ", " ", " "],[" ", " ", " "],[" ", " ", " "]]
 
     const pickTurn = () => {
         let player 
@@ -17,11 +18,13 @@ const GameBoard = (() => {
         player = O;
         GameBoard.isXTurn = true;
     } return player }
-
-    let gameArr = [[" ", " ", " "],[" ", " ", " "],[" ", " ", " "]]
-
+    
+  
+    const resetArr = () => {
+        GameBoard.gameArr = [[" ", " ", " "],[" ", " ", " "],[" ", " ", " "]]
+    }
     const setGameOver = (piece) => {
-        gameOver = true 
+        GameBoard.gameOver = true 
         const endGame = document.createElement("div")
         endGame.textContent = "Game over: " + piece + " wins!"
         const end = document.querySelector(".end")
@@ -29,30 +32,34 @@ const GameBoard = (() => {
         const button = document.createElement("button")
         button.textContent = "restart game"
         end.appendChild(button)
-        //add event listener, clear each box 
-        //look up way to find players name via piece 
-        
+        button.addEventListener('click', () => { 
+            resetArr()
+            setBoard()
+            button.style.display = 'none'
+            endGame.style.display = 'none'})
+         
     }
  
     const checkWinner = (piece) => {
-      
-        for (let i = 0; i < gameArr.length; i ++) {
+        console.log("gameboard array inside check winner func" + GameBoard.gameArr)
+        for (let i = 0; i < GameBoard.gameArr.length; i ++) {
 
-            let hori = gameArr[i].every((element) => element === piece) //checks for horizontal
+            let hori = GameBoard.gameArr[i].every((element) => element === piece) //checks for horizontal
  
-            let verticalArr =  [gameArr[0][i], gameArr[1][i], gameArr[2][i]]   
+            let verticalArr =  [...GameBoard.gameArr[0][i], GameBoard.gameArr[1][i], GameBoard.gameArr[2][i]]   
             let verti = verticalArr.every((element) => element === piece)
             if (verti || hori) {
+           
                 setGameOver(piece)
             }
         }    
      
-        if (gameArr[0][0] == gameArr[1][1] && gameArr[1][1] == gameArr[2][2] && gameArr[2][2] == piece) 
+        if (GameBoard.gameArr[0][0] == GameBoard.gameArr[1][1] && GameBoard.gameArr[1][1] == GameBoard.gameArr[2][2] && GameBoard.gameArr[2][2] == piece) 
             {
             setGameOver(piece);
          }
       
-        if (gameArr[0][2] == gameArr[1][1] && gameArr[1][1] == gameArr[2][0] && gameArr[2][0] == piece)
+        if (GameBoard.gameArr[0][2] == GameBoard.gameArr[1][1] && GameBoard.gameArr[1][1] == GameBoard.gameArr[2][0] && GameBoard.gameArr[2][0] == piece)
            { setGameOver(piece)    }
 
         
@@ -88,19 +95,19 @@ const GameBoard = (() => {
     const checkGameOver = () => {
      
         if (gameArr[0].includes(" ") == false && gameArr[1].includes(" ") == false && gameArr[2].includes(" ") == false ) {
-            gameOver = true }
+            gameOver = true 
+            const endGame = document.createElement("div")
+            endGame.textContent = "Game over: It's a tie!"
+            const end = document.querySelector(".end")
+            end.appendChild(endGame) }
           
         }
     
      return {
-        gameArr, pickTurn, checkGameOver, checkWinner
+        gameArr, pickTurn, checkGameOver, checkWinner, gameOver
      };
    
    })();
-
-//player turn state should be on game board function
-//game should be checked to see if its over after every move 
-//
 
 const Player = (name, piece) => {
 
@@ -109,7 +116,7 @@ const Player = (name, piece) => {
     const getName = () => name;
 
     const makeMove = (e) =>  {
-      
+        if (GameBoard.gameOver == false) {
         const id = e.srcElement.id.slice(2, e.srcElement.id.length)
         const box = document.getElementById(`b-${id}`)
         const i = id.slice(1, 2)
@@ -118,7 +125,15 @@ const Player = (name, piece) => {
         box.textContent = getPiece()
         GameBoard.checkGameOver()
         GameBoard.checkWinner(getPiece())
-        
+        console.log(GameBoard.gameArr)
+        const head = document.querySelector(".head")
+        const name = getName()
+        head.textContent = name + "'s turn"    
+      
+        }
+        else {
+            alert("Game is over, click 'restart game' button to restart game")
+        }
     }
        
     return {getPiece, getName, makeMove};
@@ -127,7 +142,17 @@ const Player = (name, piece) => {
 X = Player(player2, X)
 O = Player(player1, O)
 
-function addGrid() {
+function setBoard() {
+
+container.textContent = " "
+GameBoard.gameOver = false
+const head = document.createElement("h2");
+head.classList.add('head')
+const name = GameBoard.pickTurn().getName()
+head.textContent = name + "'s turn"    
+container.appendChild(head)
+
+console.log("game array" + GameBoard.gameArr)
 for (let i = 0; i < GameBoard.gameArr.length; i ++) {
     let row = document.createElement("div"); 
         row.className = "row";
@@ -145,6 +170,6 @@ for (let i = 0; i < GameBoard.gameArr.length; i ++) {
 }
 }
 
-document.addEventListener('DOMContentLoaded', addGrid() ) 
+document.addEventListener('DOMContentLoaded', setBoard() ) 
 
 
